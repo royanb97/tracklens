@@ -6,6 +6,8 @@ import type {
 } from "../../types/analysis";
 
 export async function scanPage(targetUrl: string): Promise<AnalysisResponse> {
+	const { scanTimeoutMs } = useRuntimeConfig();
+
 	const browser = await puppeteer.launch({
 		headless: true,
 		args: ["--no-sandbox", "--disable-setuid-sandbox"],
@@ -13,7 +15,7 @@ export async function scanPage(targetUrl: string): Promise<AnalysisResponse> {
 
 	try {
 		const page = await browser.newPage();
-		page.setDefaultNavigationTimeout(30_000);
+		page.setDefaultNavigationTimeout(scanTimeoutMs);
 
 		const targetHostname = new URL(targetUrl).hostname;
 		const thirdPartyRequests: RequestInfo[] = [];
@@ -33,7 +35,8 @@ export async function scanPage(targetUrl: string): Promise<AnalysisResponse> {
 			}
 		});
 
-		await page.goto(targetUrl, { waitUntil: "networkidle2" });
+		// 'load' is more reliable than 'networkidle2' for SPAs with continuous polling
+		await page.goto(targetUrl, { waitUntil: "load" });
 
 		const rawCookies = await page.cookies();
 		const cookies: CookieInfo[] = rawCookies.map((c) => ({
