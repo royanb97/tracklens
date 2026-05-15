@@ -90,19 +90,22 @@ tracklens/
 │   │   └── css/
 │   │       └── main.css          ← Tailwind v4 + Nuxt UI imports + body gradient
 │   ├── components/
+│   │   ├── AboutModal.vue        ← about modal (version, author)
+│   │   ├── ScanResult.vue        ← tabbed result view (trackers, cookies, other)
 │   │   └── UrlInput.vue          ← URL input with client-side validation
-│   └── pages/
-│       └── index.vue             ← Landing page with scan logic
+│   ├── pages/
+│   │   └── index.vue             ← landing page with scan logic
+│   └── types/
+│       └── analysis.ts           ← shared types (use ~/types/analysis everywhere)
 ├── server/
 │   ├── api/
 │   │   ├── ping.get.ts           ← smoke test endpoint
 │   │   └── analyze.post.ts       ← scan endpoint (thin, delegates to utils)
 │   └── utils/
+│       ├── errors.ts             ← SiteNotFoundError + detection helper
 │       ├── puppeteer.ts          ← browser launch, cookie + request collection
-│       ├── tracker-detection.ts  ← TODO: Sprint 2
+│       ├── tracker-detection.ts  ← DuckDuckGo Tracker Radar lookup
 │       └── privacy-score.ts      ← TODO: Sprint 2
-└── types/
-    └── analysis.ts               ← shared types (AnalysisRequest, AnalysisResponse, ...)
 ```
 
 ---

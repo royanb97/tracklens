@@ -1,6 +1,6 @@
 import { readFileSync } from 'fs'
 import { resolve } from 'path'
-import type { TrackerMatch } from '../../types/analysis'
+import type { TrackerMatch } from '~/types/analysis'
 
 interface DomainEntry {
 	displayName: string

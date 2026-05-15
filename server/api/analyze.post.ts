@@ -1,6 +1,6 @@
 import { scanPage } from '../utils/puppeteer'
 import { SiteNotFoundError } from '../utils/errors'
-import type { AnalysisRequest } from '../../types/analysis'
+import type { AnalysisRequest } from '~/types/analysis'
 
 const BLOCKED_HOSTS = new Set(['localhost', '127.0.0.1', '0.0.0.0', '::1'])
 

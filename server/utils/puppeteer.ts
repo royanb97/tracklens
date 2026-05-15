@@ -3,7 +3,7 @@ import type {
 	AnalysisResponse,
 	CookieInfo,
 	RequestInfo,
-} from "../../types/analysis";
+} from "~/types/analysis";
 import { detectTracker } from "./tracker-detection";
 import { SiteNotFoundError, isSiteNotFoundError } from "./errors";
 
