@@ -1,2 +1,7 @@
 @import "tailwindcss";
 @import "@nuxt/ui";
+
+body {
+	background: linear-gradient(160deg, #0d1117 0%, #161b27 50%, #0d1117 100%);
+	min-height: 100vh;
+}

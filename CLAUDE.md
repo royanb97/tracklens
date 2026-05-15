@@ -1,197 +1,175 @@
 # TrackLens – Claude Code Briefing
 
-> Dieses Dokument ist der **persistente Kontext** für Claude Code.
-> Es wird beim Start automatisch eingelesen. Bitte hier aktuell halten.
+> This document is the **persistent context** for Claude Code.
+> It is loaded automatically on startup. Keep it up to date.
 
 ---
 
-## Was ist TrackLens?
+## What is TrackLens?
 
-Ein **Privacy-Analyse-Tool für Websites**: User gibt eine URL ein, Backend scannt die Seite mit Puppeteer, Frontend zeigt erkannte Cookies, Tracker und Third-Party-Requests an – inklusive Privacy-Score.
+A **privacy analysis tool for websites**: the user enters a URL, the backend scans the page with Puppeteer, and the frontend displays detected cookies, trackers, and third-party requests — including a privacy score.
 
-**Primärer Zweck:** Portfolio-/Differenzierungs-Projekt für Bewerbungen. Live-Demo + öffentliches GitHub-Repo, das in Interviews vorzeigbar ist. Kein kommerzielles Produkt.
+**Primary purpose:** Portfolio/differentiation project for job applications. Live demo + public GitHub repo to showcase in interviews. Not a commercial product.
 
 ---
 
-## Tech Stack (final entschieden)
+## Tech Stack
 
-| Bereich | Entscheidung |
+| Area | Decision |
 |---|---|
-| Framework | **Nuxt 3** (Fullstack via Nitro Server Routes) |
-| Sprache | TypeScript |
+| Framework | **Nuxt 4** (fullstack via Nitro server routes) |
+| Language | TypeScript |
 | Frontend | Vue 3 (Composition API) |
-| Styling | Tailwind CSS (Open Source, MIT) |
-| UI-Komponenten | **Nuxt UI** (kostenlose Version, MIT) |
-| Scanning | **Puppeteer** (mit mitgeliefertem Chromium, nicht puppeteer-core) |
-| Tracker-Datenbank | **DuckDuckGo Tracker Radar** |
-| Package Manager | **npm** |
-| Node-Version | **Node 22 LTS** |
-| Deployment (geplant) | **Offen** – Entscheidung am Ende von Sprint 2. Optionen: Fly.io (Docker, Favorit) vs. Vercel + separates Backend (Hybrid) |
-| Datenbank | **Keine in Sprint 1 & 2.** Perspektivisch: Postgres (managed auf Fly.io) |
-| Docker | **Nur für Production**, nicht für lokale Dev-Umgebung |
+| Styling | Tailwind CSS v4 (included via Nuxt UI) |
+| UI Components | **Nuxt UI v3** (free, MIT) |
+| Scanning | **Puppeteer** (bundled Chromium, not puppeteer-core) |
+| Tracker database | **DuckDuckGo Tracker Radar** |
+| Package manager | **npm** |
+| Node version | **Node 22 LTS** |
+| Deployment (planned) | **Fly.io** via Docker (single container) |
+| Database | **None in Sprint 1 & 2.** Potentially Postgres (managed on Fly.io) later |
+| Docker | **Production only**, not used for local dev |
 
-### Bewusst NICHT genutzt – und warum
+### Deliberately NOT used — and why
 
-- **Kein separates NestJS-Backend** → Nitro-Server-Routes reichen, spart 6–8h Setup, ein Repo / ein Deploy / ein Mindset
-- **Keine DB in Sprint 1/2** → reiner Request-Response-Zyklus, keine persistenten Daten nötig
-- **Kein Nuxt UI Pro / Tailwind Plus** → kostenlose Versionen reichen voll aus
-
----
-
-## Sprint-Planung
-
-### Sprint 1 – "End-to-End funktional" (Wochenende 1, ~8–10h)
-
-**Ziel:** Lokal lauffähig. Hässlich, aber funktional.
-
-- [x] Nuxt 3 Projekt-Setup
-- [x] Nuxt UI integriert
-- [] Grundstruktur angelegt (`server/api`, `server/utils`, `types`, `components`)
-- [] Ping-Endpoint (`/api/ping`) funktioniert
-- [] Startseite (`pages/index.vue`) mit Nuxt UI rendert
-- [] Git-Repo initialisiert + auf GitHub gepusht
-- [ ] **NÄCHSTER SCHRITT:** Puppeteer-Integration (`server/api/analyze.post.ts`)
-- [ ] URL-Input-Komponente im Frontend
-- [ ] Rohe JSON-Anzeige der Scan-Ergebnisse
-- [ ] Shared TypeScript Types (`types/analysis.ts`)
-
-### Sprint 2 – "Polish + Tracker-Erkennung" (Wochenende 2, ~12h)
-
-- [ ] DuckDuckGo Tracker-Radar-Liste integrieren
-- [ ] Privacy-Score-Algorithmus (einfach, transparent)
-- [ ] UI-Redesign mit Tailwind + Dark Mode + Animations
-- [ ] Mobile-first responsive Layout
-- [ ] Donut-Chart für Tracker-Kategorien
-- [ ] Live-Deploy auf Fly.io via Docker
-- [ ] README mit Screenshots/GIF + Live-Demo-Link
-
-### Sprint 3 – "KI + Tests" (optional, nach HR-Gespräch)
-
-- [ ] Claude API für Tracker-Erklärungen
-- [ ] Unit Tests für Score-Algorithmus
-- [ ] Eventuell: Postgres + Scan-Historie
+- **No separate NestJS backend** → Nitro server routes are sufficient, saves 6–8h setup, one repo / one deploy / one mental model
+- **No Vercel** → Puppeteer on serverless is painful, Fly.io with Docker is cleaner
+- **No database in Sprint 1/2** → pure request-response cycle, no persistent data needed
+- **No Nuxt UI Pro / Tailwind Plus** → free versions are fully sufficient
 
 ---
 
-## Projektstruktur
+## Sprint Plan
+
+### Sprint 1 – "End-to-End functional" (Weekend 1, ~8–10h)
+
+**Goal:** Runs locally. Ugly but functional.
+
+- [x] Nuxt 4 project setup
+- [x] Nuxt UI v3 integrated
+- [x] Base structure created (`server/api`, `server/utils`, `types`, `components`)
+- [x] Ping endpoint (`/api/ping`) working
+- [x] Landing page (`app/pages/index.vue`) with Nuxt UI renders
+- [x] Git repo initialized + pushed to GitHub (public)
+- [x] Puppeteer integration (`server/api/analyze.post.ts` + `server/utils/puppeteer.ts`)
+- [x] URL input component in frontend (`app/components/UrlInput.vue`)
+- [x] Raw JSON display of scan results
+- [x] Shared TypeScript types (`types/analysis.ts`)
+
+### Sprint 2 – "Polish + Tracker Detection" (Weekend 2, ~12h)
+
+- [ ] Integrate DuckDuckGo Tracker Radar list
+- [ ] Privacy score algorithm (simple, transparent)
+- [ ] UI redesign with Tailwind + dark mode + animations
+- [ ] Mobile-first responsive layout
+- [ ] Donut chart for tracker categories
+- [ ] Live deploy to Fly.io via Docker
+- [ ] README with screenshots/GIF + live demo link
+
+### Sprint 3 – "AI + Tests" (optional, after HR interview)
+
+- [ ] Claude API for tracker explanations
+- [ ] Unit tests for score algorithm
+- [ ] Optionally: Postgres + scan history
+
+---
+
+## Project Structure
 
 ```
 tracklens/
-├── CLAUDE.md                     ← dieses Briefing
+├── CLAUDE.md
 ├── README.md
 ├── nuxt.config.ts
 ├── package.json
 ├── tsconfig.json
-├── app.vue                       ← Wrapper mit <UApp> und <NuxtPage />
-├── assets/
-│   └── css/
-│       └── main.css              ← @import "tailwindcss" + "@nuxt/ui"
-├── components/                   ← Vue-Komponenten (UrlInput, ScanResult, TrackerCard, ...)
-├── pages/
-│   └── index.vue                 ← Startseite
+├── app/
+│   ├── app.vue                   ← UApp wrapper + NuxtPage
+│   ├── app.config.ts             ← Nuxt UI theme (primary color, neutral)
+│   ├── assets/
+│   │   └── css/
+│   │       └── main.css          ← Tailwind v4 + Nuxt UI imports + body gradient
+│   ├── components/
+│   │   └── UrlInput.vue          ← URL input with client-side validation
+│   └── pages/
+│       └── index.vue             ← Landing page with scan logic
 ├── server/
 │   ├── api/
-│   │   ├── ping.get.ts           ← bereits da
-│   │   └── analyze.post.ts       ← TODO: Puppeteer-Logik
+│   │   ├── ping.get.ts           ← smoke test endpoint
+│   │   └── analyze.post.ts       ← scan endpoint (thin, delegates to utils)
 │   └── utils/
-│       ├── puppeteer.ts          ← TODO: Browser-Handling
+│       ├── puppeteer.ts          ← browser launch, cookie + request collection
 │       ├── tracker-detection.ts  ← TODO: Sprint 2
 │       └── privacy-score.ts      ← TODO: Sprint 2
 └── types/
-    └── analysis.ts               ← TODO: Shared Types
+    └── analysis.ts               ← shared types (AnalysisRequest, AnalysisResponse, ...)
 ```
 
 ---
 
-## Aktueller Stand (Stand: 15. Mai 2026)
+## Current Status (as of May 15, 2026)
 
-**Erledigt:**
-- Projekt initialisiert mit `npx nuxi@latest init tracklens`
-- Dependencies: `@nuxt/ui`, `puppeteer`, `@types/node`
-- `nuxt.config.ts` konfiguriert (Nuxt UI als Modul, CSS-Pfad, compatibilityVersion 4)
-- `assets/css/main.css` mit Tailwind + Nuxt UI Imports
-- `app.vue` mit `<UApp>` Wrapper
-- `pages/index.vue` mit minimaler Landing
-- `server/api/ping.get.ts` als API-Smoke-Test
-- Git initialisiert, auf GitHub gepusht (Public Repo)
+**Done:**
+- Project initialized with Nuxt 4 + Nuxt UI v3
+- Dependencies: `@nuxt/ui`, `puppeteer`, `@nuxt/eslint`, `@types/node`
+- `nuxt.config.ts` configured (Nuxt UI module, CSS path, strict TypeScript)
+- `app/assets/css/main.css` with Tailwind v4 + Nuxt UI imports + dark gradient background
+- `app/app.config.ts` with primary color `blue` and neutral `slate`
+- `app/app.vue` with `<UApp>` wrapper
+- `app/pages/index.vue` with landing page + scan logic + raw JSON output
+- `app/components/UrlInput.vue` with URL validation and loading state
+- `server/api/ping.get.ts` as API smoke test
+- `server/api/analyze.post.ts` — URL validation + SSRF protection + Puppeteer call
+- `server/utils/puppeteer.ts` — headless scan, cookies + third-party requests
+- `types/analysis.ts` — shared TypeScript types
+- Git initialized, pushed to GitHub (public repo)
 
-**Verifiziert:**
-- `npm run dev` startet sauber auf `localhost:3000`
-- Startseite rendert mit Dark-Mode-Klassen
-- `/api/ping` liefert JSON mit Status + Timestamp
-
----
-
-## Nächste Schritte für Claude Code
-
-### Schritt 9: Puppeteer-Endpoint bauen
-
-Erstelle `server/api/analyze.post.ts`:
-- Nimmt `{ url: string }` im Request-Body entgegen
-- Validiert die URL (sollte http/https sein, kein localhost o. ä.)
-- Startet Puppeteer headless, navigiert zur URL
-- Sammelt:
-  - **Cookies** (alle, mit Name, Domain, Expiry)
-  - **Third-Party-Requests** (alle Network-Requests, deren Hostname ≠ Hostname der Ziel-URL)
-- Gibt strukturiertes JSON zurück
-- Schließt den Browser sauber (auch im Fehlerfall – `try/finally`)
-- Timeout-Handling: max. 30 Sekunden pro Scan
-
-Lege gleichzeitig `types/analysis.ts` an mit den Shared Types (`AnalysisRequest`, `AnalysisResponse`, `CookieInfo`, `RequestInfo`).
-
-Lagere die Puppeteer-Logik in `server/utils/puppeteer.ts` aus, damit der Endpoint selbst dünn bleibt.
-
-### Schritt 10: Frontend-Anbindung
-
-In `pages/index.vue`:
-- URL-Input mit Nuxt UI (`<UInput>` + `<UButton>`)
-- Loading-State während des Scans
-- Rohe JSON-Anzeige des Ergebnisses (Polish kommt in Sprint 2)
-- Fehler-Handling sichtbar machen
-
-### Schritt 11: Deployment (am Ende von Sprint 2)
-
-Deployment-Entscheidung ist **offen** und wird am Ende von Sprint 2 getroffen. Zwei Hauptoptionen:
-
-**Option A: Fly.io mit Docker (Favorit)**
-- Multi-Stage-Dockerfile (Node 22 LTS Build → Runtime mit Chromium)
-- Voller Puppeteer nutzbar, kein Stripped-Chromium nötig
-- Dev-Prod-Parität durch Docker
-- Kosten: 0–5 €/Monat
-
-**Option B: Hybrid (Vercel Frontend + Fly.io Backend)**
-- Frontend auf Vercel (kostenlos, CDN)
-- Backend mit Puppeteer separat auf Fly.io
-- Mehr Setup-Aufwand, aber beide Skills im CV
-
-Vor Deployment-Schritt: aktuelle Optionen kurz neu evaluieren.
+**Verified:**
+- `npm run dev` starts cleanly on `localhost:3000`
+- Landing page renders with dark gradient background
+- `/api/ping` returns JSON with status + timestamp
+- Puppeteer endpoint implemented and ready to test
 
 ---
 
-## Konventionen & Stil
+## Next Steps
 
-- **Sprache im Code:** Englisch (Variablen, Kommentare, Commits)
-- **Sprache in der Konversation:** Deutsch (User-Präferenz)
-- **Commit-Stil:** Conventional Commits (`feat:`, `chore:`, `fix:`, `docs:`)
-- **Type-Safety:** Strikt. Keine `any`s, wenn vermeidbar. Shared Types in `types/`.
-- **Server-Routes:** Dünn halten, Logik in `server/utils/`
-- **Komponenten:** Composition API mit `<script setup lang="ts">`
+Sprint 1 is complete. Up next is **Sprint 2**:
 
----
-
-## Kontext zum Entwickler
-
-- Full-Stack-Entwickler mit Schwerpunkt Vue 3 / TypeScript
-- ~4 Jahre Berufserfahrung (Essener Digitalagentur)
-- Aktuell in Bewerbungsphase, daher: Lieferfähigkeit > Perfektion
-- TrackLens muss vor dem HR-Gespräch (ca. Ende Mai/Anfang Juni 2026) vorzeigbar sein
-- Bevorzugt klare Erklärungen, will verstehen statt nur abtippen
+1. Integrate DuckDuckGo Tracker Radar (`server/utils/tracker-detection.ts`)
+2. Privacy score algorithm (`server/utils/privacy-score.ts`)
+3. Proper result UI (replace raw JSON `<pre>` block with cards/charts)
+4. Dockerfile for Fly.io deployment
 
 ---
 
-## Wichtige Erinnerungen
+## Conventions & Style
 
-- **Kein Over-Engineering.** Wenn etwas einfacher geht und das Ziel erreicht, einfacher.
-- **Pragmatismus schlägt Idealismus.** Nuxt-Fullstack statt Microservices, SQLite/keine DB statt sofort Postgres.
-- **Live-Demo-Tauglichkeit ist King.** Lieber ein Feature weniger und stabiler als drei Features halbgar.
-- **README ist Teil des Produkts.** Wird beim Recruiter gleichzeitig mit dem Code gelesen.
+- **Language in code:** English (variables, comments, commits)
+- **Language in conversation:** German (user preference)
+- **Language in docs:** English
+- **Commit style:** Conventional Commits (`feat:`, `chore:`, `fix:`, `docs:`)
+- **Type safety:** Strict. No `any`s if avoidable. Shared types in `types/`.
+- **Server routes:** Keep thin, logic goes in `server/utils/`
+- **Components:** Composition API with `<script setup lang="ts">`
+- **Indentation:** Tabs (do not switch to spaces)
+- **Imports:** Prefer auto-imports for h3 helpers and Nuxt composables. Explicit imports for types.
+
+---
+
+## Developer Context
+
+- Full-stack developer focused on Vue 3 / TypeScript
+- ~4 years of professional experience (digital agency in Essen)
+- Currently in job application phase — deliverability > perfection
+- TrackLens must be presentable before the HR interview (approx. end of May / early June 2026)
+- Prefers clear explanations, wants to understand rather than just copy-paste
+
+---
+
+## Key Reminders
+
+- **No over-engineering.** If something simpler achieves the goal, go simpler.
+- **Pragmatism beats idealism.** Nuxt fullstack over microservices, no DB over premature Postgres.
+- **Live-demo readiness is king.** One fewer feature but stable beats three half-baked features.
+- **README is part of the product.** Recruiters read it alongside the code.
