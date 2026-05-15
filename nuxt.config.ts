@@ -6,7 +6,7 @@ export default defineNuxtConfig({
 	runtimeConfig: {
 		scanTimeoutMs: 30_000,
 		public: {
-			version: '0.0.1',
+			version: '0.0.2',
 		},
 	},
 

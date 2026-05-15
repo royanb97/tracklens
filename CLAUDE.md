@@ -58,7 +58,7 @@ A **privacy analysis tool for websites**: the user enters a URL, the backend sca
 
 ### Sprint 2 – "Polish + Tracker Detection" (Weekend 2, ~12h)
 
-- [ ] Integrate DuckDuckGo Tracker Radar list
+- [x] Integrate DuckDuckGo Tracker Radar list
 - [ ] Privacy score algorithm (simple, transparent)
 - [ ] UI redesign with Tailwind + dark mode + animations
 - [ ] Mobile-first responsive layout
