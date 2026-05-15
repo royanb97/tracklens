@@ -154,6 +154,7 @@ Sprint 1 is complete. Up next is **Sprint 2**:
 - **Components:** Composition API with `<script setup lang="ts">`
 - **Indentation:** Tabs (do not switch to spaces)
 - **Imports:** Prefer auto-imports for h3 helpers and Nuxt composables. Explicit imports for types.
+- **Changelog:** Significant changes (new features, breaking changes, notable fixes) must be added to `CHANGELOG.md`. Entries are sorted by version number, newest first.
 
 ---
 
