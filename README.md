@@ -40,6 +40,9 @@ cd tracklens
 # Install dependencies
 npm install
 
+# Download the DuckDuckGo Tracker Radar database (~10 MB, not committed to git)
+npm run fetch-tracker-db
+
 # Start the dev server
 npm run dev
 ```

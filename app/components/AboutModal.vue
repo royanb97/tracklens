@@ -14,7 +14,7 @@ const { public: { version } } = useRuntimeConfig()
 					Version {{ version }}
 				</p>
 				<p class="text-sm text-slate-400">
-					Royan Baluch
+					by Royan Baluch
 				</p>
 			</div>
 		</template>

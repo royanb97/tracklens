@@ -13,7 +13,8 @@
 		"generate": "nuxt generate",
 		"preview": "nuxt preview",
 		"typecheck": "nuxt typecheck",
-		"lint": "eslint ."
+		"lint": "eslint .",
+		"fetch-tracker-db": "node scripts/fetch-tracker-db.mjs"
 	},
 	"dependencies": {
 		"@nuxt/ui": "^3.0.0",

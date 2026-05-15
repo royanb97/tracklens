@@ -1,4 +1,5 @@
 import { scanPage } from '../utils/puppeteer'
+import { SiteNotFoundError } from '../utils/errors'
 import type { AnalysisRequest } from '../../types/analysis'
 
 const BLOCKED_HOSTS = new Set(['localhost', '127.0.0.1', '0.0.0.0', '::1'])
@@ -30,6 +31,9 @@ export default defineEventHandler(async (event) => {
 		return await scanPage(body.url)
 	}
 	catch (err) {
+		if (err instanceof SiteNotFoundError) {
+			throw createError({ statusCode: 422, message: err.message })
+		}
 		throw createError({
 			statusCode: 500,
 			message: err instanceof Error ? err.message : 'Scan failed.',

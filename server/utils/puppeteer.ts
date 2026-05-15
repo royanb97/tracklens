@@ -4,6 +4,8 @@ import type {
 	CookieInfo,
 	RequestInfo,
 } from "../../types/analysis";
+import { detectTracker } from "./tracker-detection";
+import { SiteNotFoundError, isSiteNotFoundError } from "./errors";
 
 export async function scanPage(targetUrl: string): Promise<AnalysisResponse> {
 	const { scanTimeoutMs } = useRuntimeConfig();
@@ -28,6 +30,7 @@ export async function scanPage(targetUrl: string): Promise<AnalysisResponse> {
 						url: request.url(),
 						hostname: reqHostname,
 						resourceType: request.resourceType(),
+						tracker: detectTracker(reqHostname),
 					});
 				}
 			} catch {
@@ -36,7 +39,12 @@ export async function scanPage(targetUrl: string): Promise<AnalysisResponse> {
 		});
 
 		// 'load' is more reliable than 'networkidle2' for SPAs with continuous polling
-		await page.goto(targetUrl, { waitUntil: "load" });
+		try {
+			await page.goto(targetUrl, { waitUntil: "load" });
+		} catch (err) {
+			if (isSiteNotFoundError(err)) throw new SiteNotFoundError();
+			throw err;
+		}
 
 		const rawCookies = await page.cookies();
 		const cookies: CookieInfo[] = rawCookies.map((c) => ({

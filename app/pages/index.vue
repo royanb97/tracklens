@@ -8,12 +8,12 @@ useSeoMeta({
 
 const loading = ref(false)
 const result = ref<AnalysisResponse | null>(null)
-const scanError = ref('')
+const scanError = ref<{ message: string; type: 'error' | 'warning' } | null>(null)
 
 async function handleScan(url: string) {
 	loading.value = true
 	result.value = null
-	scanError.value = ''
+	scanError.value = null
 
 	try {
 		result.value = await $fetch<AnalysisResponse>('/api/analyze', {
@@ -22,7 +22,13 @@ async function handleScan(url: string) {
 		})
 	}
 	catch (err: unknown) {
-		scanError.value = err instanceof Error ? err.message : 'Scan failed. Please try again.'
+		const status = (err as { statusCode?: number })?.statusCode
+		if (status === 422) {
+			scanError.value = { message: 'Website not found. Please check the URL and try again.', type: 'warning' }
+		}
+		else {
+			scanError.value = { message: 'Scan failed. Please try again.', type: 'error' }
+		}
 	}
 	finally {
 		loading.value = false
@@ -52,16 +58,13 @@ async function handleScan(url: string) {
 			<!-- Scan error -->
 			<UAlert
 				v-if="scanError"
-				color="error"
+				:color="scanError.type === 'warning' ? 'warning' : 'error'"
 				variant="subtle"
-				:description="scanError"
+				:description="scanError.message"
 			/>
 
-			<!-- Raw result (Sprint 1 placeholder) -->
-			<pre
-				v-if="result"
-				class="w-full text-xs bg-gray-100 dark:bg-gray-900 rounded-lg p-4 overflow-auto max-h-96"
-			>{{ JSON.stringify(result, null, 2) }}</pre>
+			<!-- Scan result -->
+			<ScanResult v-if="result" :result="result" />
 
 		</div>
 	</main>

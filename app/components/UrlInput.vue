@@ -57,7 +57,7 @@ function submit() {
 				:loading="loading"
 				:disabled="loading"
 			>
-				Scan
+				{{ loading ? 'Scanning...' : 'Scan' }}
 			</UButton>
 		</div>
 		<p v-if="error" class="text-sm text-red-500">
