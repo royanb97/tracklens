@@ -32,6 +32,15 @@ const otherByHostname = computed(() => {
 	return [...map.entries()].sort((a, b) => b[1].length - a[1].length)
 })
 
+const scoreGrade = computed(() => {
+	const s = props.result.score
+	if (s >= 90) return { label: 'Excellent', color: 'text-emerald-400', ring: 'ring-emerald-400/40', bg: 'bg-emerald-400/10' }
+	if (s >= 75) return { label: 'Good', color: 'text-green-400', ring: 'ring-green-400/40', bg: 'bg-green-400/10' }
+	if (s >= 50) return { label: 'Fair', color: 'text-yellow-400', ring: 'ring-yellow-400/40', bg: 'bg-yellow-400/10' }
+	if (s >= 25) return { label: 'Poor', color: 'text-orange-400', ring: 'ring-orange-400/40', bg: 'bg-orange-400/10' }
+	return { label: 'Bad', color: 'text-red-400', ring: 'ring-red-400/40', bg: 'bg-red-400/10' }
+})
+
 const tabs = computed(() => [
 	{
 		label: 'Trackers',
@@ -78,6 +87,17 @@ function formatExpiry(expires: number | null): string {
 				<span class="text-slate-300">
 					<span class="font-semibold text-white">{{ otherRequests.length }}</span> other third-party
 				</span>
+			</div>
+		</div>
+
+		<!-- Privacy Score -->
+		<div class="flex items-center gap-4 rounded-xl border border-slate-700/60 bg-slate-900/50 px-5 py-4">
+			<div :class="['flex items-center justify-center size-14 rounded-full ring-2 shrink-0', scoreGrade.ring, scoreGrade.bg]">
+				<span :class="['text-xl font-bold tabular-nums', scoreGrade.color]">{{ result.score }}</span>
+			</div>
+			<div class="flex flex-col gap-0.5">
+				<span class="text-xs text-slate-500 uppercase tracking-widest">Privacy Score</span>
+				<span :class="['text-base font-semibold', scoreGrade.color]">{{ scoreGrade.label }}</span>
 			</div>
 		</div>
 

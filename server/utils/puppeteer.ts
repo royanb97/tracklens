@@ -5,6 +5,7 @@ import type { Page } from 'puppeteer'
 import type { AnalysisResponse, CookieInfo, RequestInfo } from '~/types/analysis'
 import { detectTracker } from './tracker-detection'
 import { SiteNotFoundError, isSiteNotFoundError } from './errors'
+import { computeScore } from './privacy-score'
 
 const autoconsentScript = readFileSync(
 	resolve(process.cwd(), 'node_modules/@duckduckgo/autoconsent/dist/autoconsent.playwright.js'),
@@ -127,11 +128,15 @@ export async function scanPage(targetUrl: string): Promise<AnalysisResponse> {
 			sameSite: c.sameSite ?? 'None',
 		}))
 
+		const { score, grade } = computeScore(cookies, thirdPartyRequests)
+
 		return {
 			url: targetUrl,
 			scannedAt: new Date().toISOString(),
 			cookies,
 			thirdPartyRequests,
+			score,
+			grade,
 		}
 	}
 	finally {

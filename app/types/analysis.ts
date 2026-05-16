@@ -24,9 +24,13 @@ export interface RequestInfo {
 	tracker: TrackerMatch | null
 }
 
+export type Grade = 'Excellent' | 'Good' | 'Fair' | 'Poor' | 'Bad'
+
 export interface AnalysisResponse {
 	url: string
 	scannedAt: string
 	cookies: CookieInfo[]
 	thirdPartyRequests: RequestInfo[]
+	score: number
+	grade: Grade
 }

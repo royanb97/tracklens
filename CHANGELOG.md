@@ -8,6 +8,8 @@ All notable changes to this project will be documented in this file.
 
 ### Added
 
+- Privacy score (0–100) and grade (Excellent → Bad) computed server-side from tracker categories and cookie quality
+- `score` and `grade` fields added to `AnalysisResponse`
 - Cookie consent banner auto-acceptance via `@duckduckgo/autoconsent` (opt-in mode), exposing trackers that only load after user consent
 - 3-second post-load wait after navigation to capture lazy-loaded tracker scripts
 

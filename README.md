@@ -59,6 +59,44 @@ The app will be available at [http://localhost:3000](http://localhost:3000).
 
 ---
 
+## Privacy Score
+
+Every scan produces a score from **10 to 100** based on detected trackers and cookie quality.
+
+### Tracker deductions (per unique company, worst category wins)
+
+| Categories | Deduction |
+|---|---|
+| Advertising, Ad Fraud, Ad Motivated Tracking, Session Replay, Fingerprinting, Unknown High Risk Behavior, Malware | −20 |
+| Analytics, Audience Measurement, Third-Party Analytics Marketing, Action Pixels, Tag Manager | −10 |
+| Social Network, Social - Share, Social - Comment, Embedded Content, Badge | −5 |
+| Known tracker without a matching category | −8 |
+
+Tracker deductions are capped at **−70**. Each company counts once regardless of how many domains or requests it generates.
+
+### Cookie deductions (per cookie)
+
+| Condition | Deduction |
+|---|---|
+| Persistent cookie readable by JavaScript (`expires` set + no `HttpOnly`) | −3 |
+| Cookie without `Secure` flag (sent over plain HTTP) | −2 |
+
+Cookie deductions are capped at **−20**.
+
+### Score thresholds
+
+| Score | Grade |
+|---|---|
+| 90 – 100 | Excellent |
+| 75 – 89 | Good |
+| 50 – 74 | Fair |
+| 25 – 49 | Poor |
+| 10 – 24 | Bad |
+
+Categories are sourced from the [DuckDuckGo Tracker Radar](https://github.com/duckduckgo/tracker-radar) database. Tracker data covers ~38,000 known tracking domains across 400+ companies.
+
+---
+
 ## Live Demo
 
 *coming soon*
