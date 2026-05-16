@@ -1,3 +1,7 @@
+import { readFileSync } from 'fs'
+
+const { version } = JSON.parse(readFileSync('./package.json', 'utf-8'))
+
 export default defineNuxtConfig({
 	modules: ['@nuxt/ui'],
 
@@ -6,7 +10,7 @@ export default defineNuxtConfig({
 	runtimeConfig: {
 		scanTimeoutMs: 30_000,
 		public: {
-			version: '0.0.2',
+			version,
 		},
 	},
 
