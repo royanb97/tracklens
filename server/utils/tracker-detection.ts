@@ -5,6 +5,7 @@ import type { TrackerMatch } from '~/types/analysis'
 interface DomainEntry {
 	displayName: string
 	entityName: string
+	categories: string[]
 }
 
 let cache: Record<string, DomainEntry> | null = null

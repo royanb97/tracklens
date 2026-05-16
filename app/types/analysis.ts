@@ -14,6 +14,7 @@ export interface CookieInfo {
 export interface TrackerMatch {
 	displayName: string
 	entityName: string
+	categories: string[]
 }
 
 export interface RequestInfo {

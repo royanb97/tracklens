@@ -4,6 +4,16 @@ All notable changes to this project will be documented in this file.
 
 ---
 
+## [Unreleased]
+
+### Changed
+
+- Tracker detection now includes categories (e.g. Advertising, Analytics, Session Replay) sourced from individual DDG Tracker Radar domain files
+- `fetch-tracker-db` script extended: fetches categories for ~770 high-prevalence domains (prevalence ≥ 0.001) alongside the existing entity map
+- `TrackerMatch` type extended with `categories: string[]`
+
+---
+
 ## [0.0.2] – 2026-05-15
 
 ### Added
