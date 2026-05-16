@@ -17,6 +17,7 @@
 		"fetch-tracker-db": "node scripts/fetch-tracker-db.mjs"
 	},
 	"dependencies": {
+		"@duckduckgo/autoconsent": "^14.83.0",
 		"@nuxt/ui": "^3.0.0",
 		"nuxt": "^4.0.0",
 		"puppeteer": "^24.0.0",

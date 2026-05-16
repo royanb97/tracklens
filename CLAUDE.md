@@ -70,7 +70,9 @@ A **privacy analysis tool for websites**: the user enters a URL, the backend sca
 
 - [ ] Claude API for tracker explanations
 - [ ] Unit tests for score algorithm
-- [ ] Optionally: Postgres + scan history
+- [ ] Postgres + scan history
+- [ ] Share privacy report via direct link (requires Postgres)
+- [ ] Export privacy report (JSON / PDF)
 
 ---
 

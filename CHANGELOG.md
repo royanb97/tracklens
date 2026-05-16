@@ -6,6 +6,11 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+### Added
+
+- Cookie consent banner auto-acceptance via `@duckduckgo/autoconsent` (opt-in mode), exposing trackers that only load after user consent
+- 3-second post-load wait after navigation to capture lazy-loaded tracker scripts
+
 ### Changed
 
 - Tracker detection now includes categories (e.g. Advertising, Analytics, Session Replay) sourced from individual DDG Tracker Radar domain files
