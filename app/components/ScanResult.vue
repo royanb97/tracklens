@@ -63,6 +63,54 @@ function formatExpiry(expires: number | null): string {
 	if (expires === null) return 'Session'
 	return new Date(expires * 1000).toLocaleDateString()
 }
+
+const TIER_1_CATS = new Set(['Advertising', 'Ad Fraud', 'Ad Motivated Tracking', 'Session Replay', 'Fingerprinting'])
+
+const scoreExplanation = computed(() => {
+	const entities = trackersByEntity.value
+	const entityCount = entities.length
+	const trackingCookies = props.result.cookies.filter(c => c.expires !== null && !c.httpOnly).length
+
+	if (entityCount === 0 && trackingCookies === 0) {
+		return 'No known trackers or suspicious cookies detected.'
+	}
+
+	const parts: string[] = []
+
+	if (entityCount > 0) {
+		const hasInvasive = entities.some(([, reqs]) =>
+			reqs[0]?.tracker?.categories.some(c => TIER_1_CATS.has(c)),
+		)
+		const topNames = entities.slice(0, 2).map(([name]) => name).join(', ')
+		const rest = entityCount > 2 ? ` and ${entityCount - 2} more` : ''
+		parts.push(
+			`${topNames}${rest} ${entityCount === 1 ? 'is' : 'are'} tracking activity on this site`
+			+ (hasInvasive ? ', including advertising or fingerprinting.' : '.'),
+		)
+	}
+
+	if (trackingCookies > 0) {
+		parts.push(
+			`${trackingCookies} persistent cookie${trackingCookies > 1 ? 's are' : ' is'} readable by JavaScript — a common tracking pattern.`,
+		)
+	}
+
+	return parts.join(' ')
+})
+
+const expandedTrackers = ref(new Set<string>())
+function toggleTracker(key: string) {
+	if (expandedTrackers.value.has(key)) expandedTrackers.value.delete(key)
+	else expandedTrackers.value.add(key)
+	expandedTrackers.value = new Set(expandedTrackers.value)
+}
+
+const expandedOther = ref(new Set<string>())
+function toggleOther(key: string) {
+	if (expandedOther.value.has(key)) expandedOther.value.delete(key)
+	else expandedOther.value.add(key)
+	expandedOther.value = new Set(expandedOther.value)
+}
 </script>
 
 <template>
@@ -95,9 +143,10 @@ function formatExpiry(expires: number | null): string {
 			<div :class="['flex items-center justify-center size-14 rounded-full ring-2 shrink-0', scoreGrade.ring, scoreGrade.bg]">
 				<span :class="['text-xl font-bold tabular-nums', scoreGrade.color]">{{ result.score }}</span>
 			</div>
-			<div class="flex flex-col gap-0.5">
+			<div class="flex flex-col gap-1">
 				<span class="text-xs text-slate-500 uppercase tracking-widest">Privacy Score</span>
 				<span :class="['text-base font-semibold', scoreGrade.color]">{{ scoreGrade.label }}</span>
+				<p class="text-xs text-slate-400 leading-relaxed">{{ scoreExplanation }}</p>
 			</div>
 		</div>
 
@@ -115,11 +164,24 @@ function formatExpiry(expires: number | null): string {
 						:key="entity"
 						class="rounded-lg border border-slate-700/60 bg-slate-900/50 overflow-hidden"
 					>
-						<div class="flex items-center justify-between px-4 py-2.5 border-b border-slate-700/60">
-							<span class="font-medium text-sm text-white">{{ entity }}</span>
+						<button
+							class="w-full flex items-center justify-between px-4 py-2.5 hover:bg-slate-800/50 transition-colors"
+							:class="{ 'border-b border-slate-700/60': expandedTrackers.has(entity) }"
+							@click="toggleTracker(entity)"
+						>
+							<div class="flex items-center gap-2">
+								<svg
+									class="size-3.5 text-slate-500 transition-transform shrink-0"
+									:class="{ 'rotate-90': expandedTrackers.has(entity) }"
+									viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+								>
+									<path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+								</svg>
+								<span class="font-medium text-sm text-white">{{ entity }}</span>
+							</div>
 							<UBadge :label="String(requests.length)" color="error" variant="subtle" size="sm" />
-						</div>
-						<ul class="divide-y divide-slate-800">
+						</button>
+						<ul v-show="expandedTrackers.has(entity)" class="divide-y divide-slate-800">
 							<li
 								v-for="req in requests"
 								:key="req.url"
@@ -174,11 +236,24 @@ function formatExpiry(expires: number | null): string {
 						:key="hostname"
 						class="rounded-lg border border-slate-700/60 bg-slate-900/50 overflow-hidden"
 					>
-						<div class="flex items-center justify-between px-4 py-2.5 border-b border-slate-700/60">
-							<span class="font-medium text-sm text-white">{{ hostname }}</span>
+						<button
+							class="w-full flex items-center justify-between px-4 py-2.5 hover:bg-slate-800/50 transition-colors"
+							:class="{ 'border-b border-slate-700/60': expandedOther.has(hostname) }"
+							@click="toggleOther(hostname)"
+						>
+							<div class="flex items-center gap-2">
+								<svg
+									class="size-3.5 text-slate-500 transition-transform shrink-0"
+									:class="{ 'rotate-90': expandedOther.has(hostname) }"
+									viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+								>
+									<path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+								</svg>
+								<span class="font-medium text-sm text-white">{{ hostname }}</span>
+							</div>
 							<UBadge :label="String(requests.length)" color="neutral" variant="subtle" size="sm" />
-						</div>
-						<ul class="divide-y divide-slate-800">
+						</button>
+						<ul v-show="expandedOther.has(hostname)" class="divide-y divide-slate-800">
 							<li
 								v-for="req in requests"
 								:key="req.url"
