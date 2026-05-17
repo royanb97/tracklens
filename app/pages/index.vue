@@ -37,35 +37,65 @@ async function handleScan(url: string) {
 </script>
 
 <template>
-	<main class="min-h-screen flex flex-col items-center justify-center px-4 py-16">
-		<div class="w-full max-w-2xl flex flex-col items-center gap-8">
+	<main class="min-h-screen flex flex-col items-center px-4 pb-16">
+		<div
+			class="w-full flex flex-col items-center gap-8 transition-[max-width,margin-top] duration-700 ease-in-out"
+			:style="{
+				marginTop: result ? '4rem' : '25vh',
+				maxWidth: result ? '72rem' : '42rem',
+			}"
+		>
+			<!-- Hero + Input -->
+			<div class="w-full max-w-2xl flex flex-col items-center gap-8">
+				<div class="text-center flex flex-col gap-2">
+					<h1
+						class="font-bold tracking-tight transition-[font-size] duration-700 ease-in-out"
+						:class="result ? 'text-3xl' : 'text-5xl'"
+					>
+						<span class="text-white">Track</span><span class="text-primary">Lens</span>
+					</h1>
+					<Transition name="fade">
+						<p v-if="!result" class="text-lg text-slate-400">
+							See who's tracking when you visit a website.
+						</p>
+					</Transition>
+				</div>
 
-			<!-- Hero -->
-			<div class="text-center flex flex-col gap-3">
-				<h1 class="text-5xl font-bold tracking-tight">
-					Track<span class="text-primary">Lens</span>
-				</h1>
-				<p class="text-lg text-white dark:text-gray-400">
-					See who's tracking when you visit a website.
-				</p>
+				<div class="w-full rounded-xl border border-slate-700/60 bg-slate-900/50 backdrop-blur-sm p-6">
+					<UrlInput :loading="loading" @scan="handleScan" />
+				</div>
+
+				<UAlert
+					v-if="scanError"
+					:color="scanError.type === 'warning' ? 'warning' : 'error'"
+					variant="subtle"
+					:description="scanError.message"
+				/>
 			</div>
-
-			<!-- Input -->
-			<div class="w-full rounded-xl border border-slate-700/60 bg-slate-900/50 backdrop-blur-sm p-6">
-				<UrlInput :loading="loading" @scan="handleScan" />
-			</div>
-
-			<!-- Scan error -->
-			<UAlert
-				v-if="scanError"
-				:color="scanError.type === 'warning' ? 'warning' : 'error'"
-				variant="subtle"
-				:description="scanError.message"
-			/>
 
 			<!-- Scan result -->
-			<ScanResult v-if="result" :result="result" />
-
+			<Transition name="fade-up">
+				<ScanResult v-if="result" :result="result" class="w-full" />
+			</Transition>
 		</div>
 	</main>
 </template>
+
+<style scoped>
+.fade-enter-active,
+.fade-leave-active {
+	transition: opacity 0.4s ease;
+}
+.fade-enter-from,
+.fade-leave-to {
+	opacity: 0;
+}
+
+.fade-up-enter-active {
+	transition: opacity 0.5s ease 0.15s, transform 0.5s ease 0.15s;
+}
+.fade-up-enter-from {
+	opacity: 0;
+	transform: translateY(24px);
+}
+</style>
