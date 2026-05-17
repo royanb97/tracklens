@@ -4,6 +4,21 @@ All notable changes to this project will be documented in this file.
 
 ---
 
+## [0.0.4] – 2026-05-17
+
+### Added
+
+- Privacy score widget in scan result UI — positioned between summary bar and tabs, color-coded by grade (Excellent → Bad)
+- Contextual explanation text below the grade: names the top tracking companies and flags invasive categories or suspicious cookies
+- GitHub and Mail buttons in About modal
+
+### Changed
+
+- Tracker and "Other third-party" lists are now collapsible accordions — collapsed by default, showing only company name and request count
+- `nuxt.config.ts` reads `version` from `package.json` instead of duplicating it
+
+---
+
 ## [0.0.3] – 2026-05-16
 
 ### Added
