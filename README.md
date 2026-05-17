@@ -1,6 +1,6 @@
 # TrackLens
 
-**TrackLens** analyzes websites for cookies, trackers, and third-party requests — including a privacy score.
+**TrackLens** analyzes websites for cookies, trackers, and third-party requests — including a privacy score, using [DuckDuckGo Tracker Radar](https://github.com/duckduckgo/tracker-radar) as source.
 
 Enter a URL, scan, done. No account required, no data is stored.
 
