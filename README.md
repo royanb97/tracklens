@@ -10,8 +10,8 @@ Enter a URL, scan, done. No account required, no data is stored.
 
 - **Cookie analysis** – all cookies with domain, expiry, and flags (HttpOnly, Secure, SameSite)
 - **Third-party requests** – all network requests to external domains, captured and categorized
-- **Privacy score** – transparent rating based on detected trackers *(Sprint 2)*
-- **Tracker detection** – matched against the DuckDuckGo Tracker Radar database *(Sprint 2)*
+- **Privacy score** – transparent rating based on detected trackers *(work in progress)*
+- **Tracker detection** – matched against the DuckDuckGo Tracker Radar database *(work in progress)*
 
 ---
 
@@ -40,7 +40,7 @@ cd tracklens
 # Install dependencies
 npm install
 
-# Download the DuckDuckGo Tracker Radar database (~10 MB, not committed to git)
+# Download the DuckDuckGo Tracker Radar database (~4 MB)
 npm run fetch-tracker-db
 
 # Start the dev server
