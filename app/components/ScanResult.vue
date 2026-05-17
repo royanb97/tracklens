@@ -116,6 +116,27 @@ const scoreExplanation = computed(() => {
 	return parts.join(' ')
 })
 
+// Animated score counter
+const displayedScore = ref(0)
+
+function animateScore(target: number) {
+	const duration = 2000
+	const start = performance.now()
+	function step(now: number) {
+		const progress = Math.min((now - start) / duration, 1)
+		const eased = 1 - Math.pow(1 - progress, 3)
+		displayedScore.value = Math.round(eased * target)
+		if (progress < 1) requestAnimationFrame(step)
+	}
+	requestAnimationFrame(step)
+}
+
+onMounted(() => animateScore(props.result.score))
+watch(() => props.result.score, (score) => {
+	displayedScore.value = 0
+	animateScore(score)
+})
+
 // Accordion state
 const expandedTrackers = ref(new Set<string>())
 function toggleTracker(key: string) {
@@ -163,7 +184,7 @@ function toggleOther(key: string) {
 			<!-- Privacy Score -->
 			<div class="flex items-center gap-4 rounded-xl border border-slate-700/60 bg-slate-900/50 px-5 py-4">
 				<div :class="['flex items-center justify-center size-14 rounded-full ring-2 shrink-0', scoreGrade.ring, scoreGrade.bg]">
-					<span :class="['text-xl font-bold tabular-nums', scoreGrade.color]">{{ result.score }}</span>
+					<span :class="['text-xl font-bold tabular-nums', scoreGrade.color]">{{ displayedScore }}</span>
 				</div>
 				<div class="flex flex-col gap-1">
 					<span class="text-xs text-slate-500 uppercase tracking-widest">Privacy Score</span>
