@@ -48,6 +48,25 @@ npm run dev
 
 The app will be available at [http://localhost:3000](http://localhost:3000).
 
+### Ubuntu / WSL
+
+If you're on Ubuntu or WSL, make sure the system dependencies for Chromium are installed — Puppeteer's bundled browser requires them:
+
+```bash
+sudo apt-get update && sudo apt-get install -y \
+  libnss3 \
+  libatk1.0-0 \
+  libatk-bridge2.0-0 \
+  libcups2 \
+  libxcomposite1 \
+  libxdamage1 \
+  libxfixes3 \
+  libxrandr2 \
+  libgbm1 \
+  libxkbcommon0 \
+  libasound2t64
+```
+
 ---
 
 ## Environment Variables
