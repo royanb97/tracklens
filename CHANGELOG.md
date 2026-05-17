@@ -10,12 +10,15 @@ All notable changes to this project will be documented in this file.
 
 - Privacy score widget in scan result UI — positioned between summary bar and tabs, color-coded by grade (Excellent → Bad)
 - Contextual explanation text below the grade: names the top tracking companies and flags invasive categories or suspicious cookies
-- GitHub and Mail buttons in About modal
+- Category badges on tracker accordion headers, color-coded by severity (red: Advertising/Fingerprinting/Session Replay, yellow: Analytics/Tag Manager, grey: Social/other)
+- Animations: hero + URL input slide smoothly upward on scan completion; subtitle fades out; scan result fades and slides in with a short delay
 
 ### Changed
 
 - Tracker and "Other third-party" lists are now collapsible accordions — collapsed by default, showing only company name and request count
 - `nuxt.config.ts` reads `version` from `package.json` instead of duplicating it
+- Scan result layout is now two-column on desktop: Score + summary on the left, tabs with tracker/cookie details on the right
+- "Track" in the TrackLens heading is now explicitly white for better contrast on dark backgrounds
 
 ---
 
