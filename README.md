@@ -24,7 +24,6 @@ Enter a URL, scan, done. No account required, no data is stored.
 | UI | Nuxt UI v3 + Tailwind CSS v4 |
 | Scanning | Puppeteer (headless Chromium) |
 | Tracker DB | DuckDuckGo Tracker Radar |
-| Deployment | Fly.io via Docker |
 
 ---
 
