@@ -26,14 +26,15 @@ A **privacy analysis tool for websites**: the user enters a URL, the backend sca
 | Tracker database | **DuckDuckGo Tracker Radar** |
 | Package manager | **npm** |
 | Node version | **Node 22 LTS** |
-| Deployment (planned) | **Fly.io** via Docker (single container) |
-| Database | **None in Sprint 1 & 2.** Potentially Postgres (managed on Fly.io) later |
+| Deployment (planned) | **Netcup VPS 500 G12** (Nuremberg, Ubuntu 24.04 LTS, Docker + Caddy reverse proxy). Fixed price ~5.35 €/month including IPv4. Hard cost cap — no pay-as-you-go surprises. |
+| Database | **None in Sprint 1 & 2.** Potentially Postgres in Sprint 3 (self-hosted on the same VPS via Docker) |
 | Docker | **Production only**, not used for local dev |
 
 ### Deliberately NOT used — and why
 
 - **No separate NestJS backend** → Nitro server routes are sufficient, saves 6–8h setup, one repo / one deploy / one mental model
-- **No Vercel** → Puppeteer on serverless is painful, Fly.io with Docker is cleaner
+- **No Vercel** → Puppeteer on serverless is painful, requires `@sparticuz/chromium` workarounds, and Hobby tier has a 10s function timeout that breaks scans
+- **No Fly.io** → pay-as-you-go pricing has no built-in hard cap; for a portfolio project, predictable fixed costs on an owned VPS are preferable, and the "self-hosted on a VPS with Docker + reverse proxy" story is a stronger CV signal
 - **No database in Sprint 1/2** → pure request-response cycle, no persistent data needed
 - **No Nuxt UI Pro / Tailwind Plus** → free versions are fully sufficient
 
@@ -63,7 +64,7 @@ A **privacy analysis tool for websites**: the user enters a URL, the backend sca
 - [ ] UI redesign with Tailwind + dark mode + animations
 - [ ] Mobile-first responsive layout
 - [ ] Donut chart for tracker categories
-- [ ] Live deploy to Fly.io via Docker
+- [ ] Live deploy to Netcup VPS (Docker + Caddy reverse proxy on `tracklens.<domain>`)
 - [ ] README with screenshots/GIF + live demo link
 
 ### Sprint 3 – "AI + Tests" (optional, after HR interview)
@@ -112,7 +113,7 @@ tracklens/
 
 ---
 
-## Current Status (as of May 15, 2026)
+## Current Status (as of May 18, 2026)
 
 **Done:**
 - Project initialized with Nuxt 4 + Nuxt UI v3
@@ -128,6 +129,7 @@ tracklens/
 - `server/utils/puppeteer.ts` — headless scan, cookies + third-party requests
 - `types/analysis.ts` — shared TypeScript types
 - Git initialized, pushed to GitHub (public repo)
+- Deployment target chosen: Netcup VPS 500 G12 (Nuremberg, 2 vCores, 4 GB DDR5 ECC, 128 GB NVMe), fixed ~5.35 €/month with IPv4
 
 **Verified:**
 - `npm run dev` starts cleanly on `localhost:3000`
@@ -144,7 +146,24 @@ Sprint 1 is complete. Up next is **Sprint 2**:
 1. Integrate DuckDuckGo Tracker Radar (`server/utils/tracker-detection.ts`)
 2. Privacy score algorithm (`server/utils/privacy-score.ts`)
 3. Proper result UI (replace raw JSON `<pre>` block with cards/charts)
-4. Dockerfile for Fly.io deployment
+4. Dockerfile for production build (multi-stage, system Chromium for Puppeteer)
+5. Netcup VPS provisioning + Docker + Caddy reverse proxy setup + first deploy
+
+---
+
+## Deployment Details (Netcup VPS)
+
+For the deployment phase at the end of Sprint 2:
+
+- **Provider:** Netcup (German, EU-hosted — thematically fitting for a privacy tool)
+- **Plan:** VPS 500 G12 — 2 vCores, 4 GB DDR5 ECC RAM, 128 GB NVMe, AMD EPYC 9645
+- **Location:** Nuremberg (DE)
+- **OS:** Ubuntu 24.04 LTS
+- **Contract:** 12 months (4.85 €/month base + 0.50 €/month IPv4 = **5.35 €/month, hard-capped**)
+- **Stack on the server:** Docker + Docker Compose + Caddy (automatic HTTPS via Let's Encrypt)
+- **Deployment flow:** GitHub Actions builds image on push to `main`, SSH deploy to VPS, `docker compose up -d`
+- **Subdomain:** `tracklens.<domain>` (separate from existing Netcup Webhosting projects)
+- **Note:** Existing Netcup Webhosting Expert M (Vue.js static + PHP sites) stays untouched on shared hosting — VPS is a new, isolated environment
 
 ---
 

@@ -29,7 +29,7 @@ Enter a URL, scan, done. No account required, no data is stored.
 
 ## Local Development
 
-**Requirements:** Node.js 22 LTS, npm
+**Requirements:** Node.js 22 LTS (or higher), npm
 
 ```bash
 # Clone the repository
